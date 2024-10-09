@@ -8,28 +8,42 @@ class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
 
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  BottomNavBarState createState() => BottomNavBarState(); // Make the state class public
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class BottomNavBarState extends State<BottomNavBar> { // Remove the underscore to make the state class public
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const HomeScreen(), // Home Screen
-    const OrderHistoryScreen(), // Order History Screen
-    const PaymentMethodsScreen(), // Payments Screen
-    const SettingsScreen(), // Settings Screen
+    const HomeScreen(),
+    const OrderHistoryScreen(),
+    const PaymentMethodsScreen(),
+    const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: IndexedStack( // Keeps the state of each page intact while switching
-          index: _currentIndex,
-          children: _pages,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
+      floatingActionButton: _currentIndex == 0
+          ? FloatingActionButton(
+              onPressed: () {
+                // Example of handling a button press
+                print('Floating Action Button Pressed!');
+              },
+              child: const Icon(Icons.local_gas_station),
+              backgroundColor: Colors.deepPurple,
+              elevation: 5,
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: BottomNavigationBar(
           currentIndex: _currentIndex,
           onTap: (int index) {
             setState(() {
@@ -56,15 +70,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
           ],
         ),
-        floatingActionButton: _currentIndex == 0 // Show FAB only on Home screen
-            ? FloatingActionButton(
-                onPressed: () {
-                  // Add your action here (e.g., starting a new fuel order)
-                },
-                child: const Icon(Icons.local_gas_station),
-                backgroundColor: Colors.deepPurple,
-              )
-            : null, // Hide FAB on other screens
       ),
     );
   }

@@ -10,7 +10,7 @@ class PaymentMethodsScreen extends StatelessWidget {
         title: const Text('Payment Methods'),
         centerTitle: true,
       ),
-      body: _buildPaymentMethodsList(),
+      body: _buildPaymentMethodsList(context), // Passing context here
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Logic to add a new payment method
@@ -21,7 +21,7 @@ class PaymentMethodsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentMethodsList() {
+  Widget _buildPaymentMethodsList(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: <Widget>[
@@ -30,18 +30,21 @@ class PaymentMethodsScreen extends StatelessWidget {
           'Expires 12/25',
           Icons.credit_card,
           Colors.blue,
+          context, // Passing context here
         ),
         _buildPaymentCard(
           'MasterCard **** 5678',
           'Expires 11/24',
           Icons.credit_card,
           Colors.orange,
+          context, // Passing context here
         ),
         _buildPaymentCard(
           'PayPal',
           'user@example.com',
           Icons.account_balance_wallet,
           Colors.green,
+          context, // Passing context here
         ),
       ],
     );
@@ -52,6 +55,7 @@ class PaymentMethodsScreen extends StatelessWidget {
     String subtitle,
     IconData icon,
     Color iconColor,
+    BuildContext context, // Accepting context parameter
   ) {
     return Card(
       elevation: 5,
@@ -72,10 +76,37 @@ class PaymentMethodsScreen extends StatelessWidget {
         trailing: IconButton(
           icon: const Icon(Icons.delete, color: Colors.redAccent),
           onPressed: () {
-            // Logic to delete the payment method
+            _showDeleteConfirmationDialog(context, title); // Use context here
           },
         ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, String paymentMethod) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Payment Method'),
+          content: Text('Are you sure you want to delete $paymentMethod?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel', style: TextStyle(color: Colors.blue)),
+            ),
+            TextButton(
+              onPressed: () {
+                // Logic to delete the payment method
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Delete', style: TextStyle(color: Colors.redAccent)),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -178,7 +178,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               BoxShadow(
                 color: Colors.black26,
                 blurRadius: 4,
-                offset: Offset(0, 2), // Shadow positioning
+                offset: const Offset(0, 2), // Shadow positioning
               ),
             ],
           ),

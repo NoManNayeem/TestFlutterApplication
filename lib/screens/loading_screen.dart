@@ -11,10 +11,17 @@ class LoadingScreen extends StatefulWidget {
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingScreenState extends State<LoadingScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
   @override
   void initState() {
     super.initState();
+    // Initialize the animation controller for the spinner
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(); // The spinner will repeat indefinitely
     _checkUserStatus();
   }
 
@@ -23,6 +30,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     bool isFirstLaunch = await AuthService().isFirstLaunch();
     bool isLoggedIn = await AuthService().isLoggedIn();
 
+    // Navigate based on user status
     if (isFirstLaunch) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
@@ -39,16 +47,36 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   @override
+  void dispose() {
+    _animationController.dispose(); // Dispose the animation controller to avoid memory leaks
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            CircularProgressIndicator(),
-            SizedBox(height: 20.0),
-            Text(
+          children: <Widget>[
+            // Animated Spinner using Icon and RotationTransition
+            AnimatedBuilder(
+              animation: _animationController,
+              child: const Icon(
+                Icons.local_gas_station, // Use any icon you prefer
+                size: 80.0,
+                color: Colors.blue, // Customize color as needed
+              ),
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: _animationController.value * 2.0 * 3.141592653589793238,
+                  child: child,
+                );
+              },
+            ),
+            const SizedBox(height: 20.0),
+            const Text(
               'Loading...',
               style: TextStyle(fontSize: 16.0, color: Colors.black),
             ),

@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
+import '../screens/order_history_screen.dart';
+import '../screens/payment_methods_screen.dart';
+import '../screens/settings_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    const HomeScreenBody(),
+    const OrderHistoryScreen(),
+    const PaymentMethodsScreen(),
+    const SettingsScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +43,19 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
-              // Navigate to notifications page
+              // Handle notifications action
+              print('Notifications tapped!');
             },
           ),
         ],
-        backgroundColor: Colors.blueGrey, // Modern color scheme
+        backgroundColor: Colors.blueGrey,
         elevation: 10,
       ),
       drawer: _buildDrawer(context),
-      body: _buildBody(context),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }
@@ -61,16 +82,16 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           _buildDrawerItem(Icons.home, 'Home', context, () {
-            Navigator.pop(context);
+            _navigateToPage(0);
           }),
           _buildDrawerItem(Icons.history, 'Order History', context, () {
-            // Navigate to order history
+            _navigateToPage(1);
           }),
           _buildDrawerItem(Icons.payment, 'Payment Methods', context, () {
-            // Navigate to payment methods
+            _navigateToPage(2);
           }),
           _buildDrawerItem(Icons.settings, 'Settings', context, () {
-            // Navigate to settings
+            _navigateToPage(3);
           }),
         ],
       ),
@@ -88,7 +109,51 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  void _navigateToPage(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    Navigator.pop(context); // Close the drawer after navigation
+  }
+
+  Widget _buildBottomNavBar() {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      onTap: (index) {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.history),
+          label: 'Orders',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.payment),
+          label: 'Payments',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Settings',
+        ),
+      ],
+      selectedItemColor: Colors.deepPurple,
+      unselectedItemColor: Colors.grey,
+      showUnselectedLabels: true,
+    );
+  }
+}
+
+class HomeScreenBody extends StatelessWidget {
+  const HomeScreenBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -167,7 +232,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               width: 100,
               height: 100,
-              color: Colors.blueAccent.withOpacity(0.2), // Placeholder for image
+              color: Colors.blueAccent.withOpacity(0.2),
               child: const Icon(Icons.local_offer, size: 50, color: Colors.blueAccent),
             ),
             const SizedBox(width: 16),
@@ -185,9 +250,9 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildStationRecommendations() {
     return ListView.builder(
-      itemCount: 5, // Dummy data count
-      shrinkWrap: true, // Required when inside a SingleChildScrollView
-      physics: const NeverScrollableScrollPhysics(), // Disable ListView's own scrolling
+      itemCount: 5,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return Card(
           elevation: 4,
@@ -196,38 +261,15 @@ class HomeScreen extends StatelessWidget {
           child: ListTile(
             leading: const Icon(Icons.location_on, color: Colors.blueGrey),
             title: Text('Fuel Station #${index + 1}'),
-            subtitle: Text('2.5 miles away'),
+            subtitle: const Text('2.5 miles away'),
             trailing: IconButton(
               icon: const Icon(Icons.navigation, color: Colors.blueAccent),
               onPressed: () {
-                // Handle navigation to the station
+                print('Navigate to station #${index + 1}');
               },
             ),
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    return BottomNavigationBar(
-      currentIndex: 0,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.history),
-          label: 'Orders',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
-      ],
-      onTap: (index) {
-        // Handle navigation based on tapped index
       },
     );
   }

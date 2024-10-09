@@ -18,104 +18,124 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'XPress Fuel',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light, // Light theme
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.blue, // Consistent app bar color
-          elevation: 0, // Flat app bar for a modern look
-        ),
-        textTheme: const TextTheme(
-          headlineLarge: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold), // Updated from headline1
-          bodyLarge: TextStyle(fontSize: 16.0), // Updated from bodyText1
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            textStyle: const TextStyle(fontSize: 18.0),
-            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
+      theme: _buildTheme(),
+      debugShowCheckedModeBanner: false,
+      home: _buildInitialScreen(), // Dynamically build initial screen
+      routes: _buildRoutes(), // Define static routes
+      onGenerateRoute: _buildPageTransitions, // Custom page transitions
+    );
+  }
+
+  // Build app theme with enhanced typography and design
+  ThemeData _buildTheme() {
+    return ThemeData(
+      primarySwatch: Colors.blue,
+      brightness: Brightness.light,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.blue,
+        elevation: 0, // Flat app bar for a modern look
+      ),
+      textTheme: const TextTheme(
+        titleLarge: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold), // Use modern typography
+        bodyLarge: TextStyle(fontSize: 16.0),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          textStyle: const TextStyle(fontSize: 18.0),
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),
-      debugShowCheckedModeBanner: false,
-      home: FutureBuilder<bool>(
-        future: AuthService().isFirstLaunch(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SplashScreen();
-          } else if (snapshot.hasError) {
-            // Display an error screen if there's an issue
-            return const Center(child: Text('Error occurred, please restart the app.'));
-          } else if (snapshot.data == true) {
-            return const OnboardingScreen(); // First-time user
-          } else {
-            return FutureBuilder<bool>(
-              future: AuthService().isLoggedIn(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const LoadingScreen();
-                } else if (snapshot.hasError) {
-                  // Handle error case here too
-                  return const Center(child: Text('Error occurred, please restart the app.'));
-                } else if (snapshot.data == true) {
-                  return const HomeScreen(); // User logged in
-                } else {
-                  return const LoginScreen(); // User not logged in
-                }
-              },
-            );
-          }
-        },
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue.shade700, width: 2),
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const HomeScreen(),
-      },
-      // Adding smooth transitions between pages
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case '/login':
-            return MaterialPageRoute(
-                builder: (context) => const LoginScreen(),
-                settings: settings,
-                fullscreenDialog: true);
-          case '/register':
-            return MaterialPageRoute(
-                builder: (context) => const RegisterScreen(),
-                settings: settings,
-                fullscreenDialog: true);
-          case '/home':
-            return PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const HomeScreen(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                const begin = Offset(0.0, 1.0);
-                const end = Offset.zero;
-                const curve = Curves.ease;
+    );
+  }
 
-                var tween = Tween(begin: begin, end: end)
-                    .chain(CurveTween(curve: curve));
-
-                return SlideTransition(
-                  position: animation.drive(tween),
-                  child: child,
-                );
-              },
-            );
-          default:
-            return null;
+  // Determine initial screen based on first launch and login status
+  Widget _buildInitialScreen() {
+    return FutureBuilder<bool>(
+      future: AuthService().isFirstLaunch(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SplashScreen();
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error occurred, please restart the app.'));
+        } else if (snapshot.data == true) {
+          return const OnboardingScreen(); // First-time user
+        } else {
+          return _buildLoggedInChecker(); // Check login status
         }
       },
     );
+  }
+
+  // Check if user is logged in and decide the next screen
+  Widget _buildLoggedInChecker() {
+    return FutureBuilder<bool>(
+      future: AuthService().isLoggedIn(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const LoadingScreen();
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error occurred, please restart the app.'));
+        } else if (snapshot.data == true) {
+          return const HomeScreen(); // User is logged in
+        } else {
+          return const LoginScreen(); // User is not logged in
+        }
+      },
+    );
+  }
+
+  // Define static routes for common navigation
+  Map<String, WidgetBuilder> _buildRoutes() {
+    return {
+      '/login': (context) => const LoginScreen(),
+      '/register': (context) => const RegisterScreen(),
+      '/home': (context) => const HomeScreen(),
+    };
+  }
+
+  // Build custom page transitions for a smooth user experience
+  Route<dynamic>? _buildPageTransitions(RouteSettings settings) {
+    switch (settings.name) {
+      case '/login':
+        return MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case '/register':
+        return MaterialPageRoute(
+          builder: (context) => const RegisterScreen(),
+          settings: settings,
+          fullscreenDialog: true,
+        );
+      case '/home':
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0.0, 1.0);
+            const end = Offset.zero;
+            const curve = Curves.easeInOut;
+
+            final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        );
+      default:
+        return null;
+    }
   }
 }

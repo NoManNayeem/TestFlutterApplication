@@ -52,35 +52,35 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: FadeTransition(
-                opacity: _fadeInAnimation,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    Image(
-                      image: NetworkImage('https://via.placeholder.com/150'),
-                      height: 150.0,
-                      fit: BoxFit.contain,
+          // Main content of the splash screen
+          Center(
+            child: FadeTransition(
+              opacity: _fadeInAnimation,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const <Widget>[
+                  // Splash image
+                  Image(
+                    image: NetworkImage('https://via.placeholder.com/150'),
+                    height: 150.0,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(height: 20.0),
+                  // App name or logo text
+                  Text(
+                    'XPress Fuel',
+                    style: TextStyle(
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                      letterSpacing: 1.5,
                     ),
-                    SizedBox(height: 20.0),
-                    Text(
-                      'XPress Fuel',
-                      style: TextStyle(
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
-                        letterSpacing: 1.5,
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
+          // Loading indicator at the bottom
           Positioned(
             bottom: 40,
             left: 0,

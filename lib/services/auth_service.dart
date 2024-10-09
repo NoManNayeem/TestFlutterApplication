@@ -1,4 +1,6 @@
 class AuthService {
+  bool _isLoggedIn = false; // Variable to track the login status
+
   // Simulating if this is the first time the user has launched the app
   Future<bool> isFirstLaunch() async {
     // Simulated delay to mimic a real async operation
@@ -7,25 +9,31 @@ class AuthService {
     return true; // Change this to false after the first launch
   }
 
-  // Simulating if the user is logged in
+  // Checking if the user is logged in
   Future<bool> isLoggedIn() async {
     // Simulated delay to mimic a real async operation
     await Future.delayed(const Duration(seconds: 1));
-    // Normally, you would check persistent storage for authentication tokens
-    return false; // Simulate the user not being logged in
+    return _isLoggedIn;
   }
 
   // Simulating login function
-  Future<void> login(String username, String password) async {
+  Future<bool> login(String username, String password) async {
     // Simulated delay for login process
     await Future.delayed(const Duration(seconds: 1));
-    // Here, you'd normally validate credentials and store authentication tokens
+
+    // Check if the credentials are correct
+    if (username == 'Nayeem' && password == 'Password') {
+      _isLoggedIn = true; // Mark the user as logged in
+      return true; // Login successful
+    } else {
+      return false; // Login failed
+    }
   }
 
   // Simulating logout function
   Future<void> logout() async {
     // Simulated delay for logout process
     await Future.delayed(const Duration(seconds: 1));
-    // Here, you'd normally clear authentication tokens from storage
+    _isLoggedIn = false; // Mark the user as logged out
   }
 }

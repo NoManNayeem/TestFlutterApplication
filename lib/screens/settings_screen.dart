@@ -21,25 +21,26 @@ class SettingsScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Account Settings'),
+            _buildSettingsOption(
+              context,
+              icon: Icons.person,
+              title: 'Account Settings',
               onTap: () {
                 // Navigate to Account Settings
               },
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text('Notification Settings'),
+            _buildSettingsOption(
+              context,
+              icon: Icons.notifications,
+              title: 'Notification Settings',
               onTap: () {
                 // Navigate to Notification Settings
               },
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.privacy_tip),
-              title: const Text('Privacy Settings'),
+            _buildSettingsOption(
+              context,
+              icon: Icons.privacy_tip,
+              title: 'Privacy Settings',
               onTap: () {
                 // Navigate to Privacy Settings
               },
@@ -61,6 +62,19 @@ class SettingsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSettingsOption(BuildContext context, {required IconData icon, required String title, required VoidCallback onTap}) {
+    return Column(
+      children: [
+        ListTile(
+          leading: Icon(icon),
+          title: Text(title),
+          onTap: onTap,
+        ),
+        const Divider(),
+      ],
     );
   }
 }

@@ -16,7 +16,6 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   String _password = '';
   bool _isPasswordVisible = false;
 
-  // Animation controller
   late AnimationController _animationController;
   late Animation<double> _fadeInAnimation;
 

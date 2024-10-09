@@ -1,31 +1,97 @@
-# **Fuel Delivery App: Project Objectives**
 
-## **Project Overview**
-The Fuel Delivery App aims to provide users with a convenient and reliable solution for ordering fuel directly to their vehicles. The app will offer services such as fuel delivery tracking, order history management, and payment handling, with a focus on modern UI/UX for seamless user interaction.
+# Fuel Delivery App - Flutter Project
 
-## **Objectives**
-1. **User-Friendly Fuel Ordering System:**
-   - Enable users to easily order fuel from nearby stations based on their current location.
-   - Provide real-time tracking of fuel delivery with notifications and delivery status updates.
+This is a simple Fuel Delivery App built using Flutter. It has features like managing fuel orders, payment methods, settings, and more.
 
-2. **Fuel Station Recommendations:**
-   - Display a list of recommended or nearby fuel stations, including details like distance and pricing.
-   - Allow users to navigate to selected stations via integrated mapping and navigation tools.
+## Features
 
-3. **Quick Access to Services:**
-   - Implement quick actions such as ordering fuel, viewing order history, and managing payment methods directly from the home screen for a streamlined user experience.
+- **Home Screen**: Displays quick actions, promotions, and recommended stations.
+- **Order History**: View past fuel delivery orders.
+- **Payment Methods**: Manage your saved payment methods.
+- **Settings**: Manage application settings.
+- **Navigation**: 
+  - Drawer navigation for accessing various sections like Home, Order History, Payment Methods, and Settings.
+  - Bottom Navigation Bar for navigating between Home, Orders, Payments, and Settings screens.
 
-4. **Seamless Payment System:**
-   - Provide secure payment options, including credit cards, mobile payments, and other digital payment methods.
-   - Allow users to manage and add new payment methods within the app.
+## Screens
+1. **HomeScreen**: Displays quick actions, promotions, and fuel station recommendations.
+2. **OrderHistoryScreen**: Displays the history of fuel deliveries.
+3. **PaymentMethodsScreen**: Manages payment methods such as credit cards and PayPal.
+4. **SettingsScreen**: Application settings such as account and notification preferences.
 
-5. **Modern and Attractive UI/UX:**
-   - Design an intuitive and aesthetic interface using modern design principles.
-   - Ensure smooth navigation and responsiveness across devices, ensuring compatibility with both Android and iOS.
+## App Screenshots
 
-## **Core Features**
-- **Fuel Ordering:** Simple and easy process to order fuel for delivery.
-- **Order History:** View past fuel orders and track current ones.
-- **Station Recommendations:** Discover nearby fuel stations with the best offers.
-- **Real-Time Tracking:** Track fuel deliveries in real-time via GPS.
-- **Payment Integration:** Secure and flexible payment options for hassle-free transactions.
+<div align="center">
+  <img src="screenshots/screenshot1.png" width="200" />
+  <img src="screenshots/screenshot2.png" width="200" />
+  <img src="screenshots/screenshot3.png" width="200" />
+  <img src="screenshots/screenshot4.png" width="200" />
+</div>
+
+<div align="center">
+  <img src="screenshots/screenshot5.png" width="200" />
+  <img src="screenshots/screenshot6.png" width="200" />
+  <img src="screenshots/screenshot7.png" width="200" />
+  <img src="screenshots/screenshot8.png" width="200" />
+</div>
+
+
+
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have Flutter installed on your machine. You can download Flutter from [here](https://flutter.dev/docs/get-started/install).
+
+### Installing
+
+Clone this repository and navigate to the project folder:
+
+```bash
+git clone https://github.com/your-username/fuel-delivery-app.git
+cd fuel-delivery-app
+```
+
+Install the necessary dependencies:
+
+```bash
+flutter pub get
+```
+
+### Running the App
+
+To run the app on an emulator or physical device, use the following command:
+
+```bash
+flutter run
+```
+
+### Folder Structure
+
+```plaintext
+lib/
+├── main.dart              # App entry point
+├── screens/               # Contains all the screens for the app
+│   ├── home_screen.dart
+│   ├── order_history_screen.dart
+│   ├── payment_methods_screen.dart
+│   └── settings_screen.dart
+├── widgets/               # Contains reusable widgets like ActionCard
+└── services/              # Service files (e.g., authentication service)
+```
+
+### Built With
+
+- Flutter - The framework used
+
+
+
+
+## Authors
+
+- **Nayeem Islam** - [NoManNayeem](https://github.com/NoManNayeem/TestFlutterApplication.git)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.

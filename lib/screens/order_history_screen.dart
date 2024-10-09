@@ -10,11 +10,11 @@ class OrderHistoryScreen extends StatelessWidget {
         title: const Text('Order History'),
         centerTitle: true,
       ),
-      body: _buildOrderHistoryList(context),
+      body: _buildOrderHistoryList(),
     );
   }
 
-  Widget _buildOrderHistoryList(BuildContext context) {
+  Widget _buildOrderHistoryList() {
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemCount: 5, // Placeholder for 5 orders
@@ -154,6 +154,12 @@ class OrderDetailsScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               child: const Text('Back to Order History'),
             ),
           ],
