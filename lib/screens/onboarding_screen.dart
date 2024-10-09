@@ -16,7 +16,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, String>> _onboardingData = [
     {
       'image': 'assets/images/image1.jpg',
-      'title': 'Welcome to XPress Fuel!',
+      'title': 'Welcome to Rapid Fuel!',
       'description': 'Find and order fuel delivery easily.',
     },
     {

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'XPress Fuel',
+      title: 'Rapid Fuel',
       theme: _buildTheme(),
       debugShowCheckedModeBanner: false,
       home: _buildInitialScreen(), // Dynamically build initial screen

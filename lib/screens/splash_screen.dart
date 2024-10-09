@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   SizedBox(height: 20.0),
                   // App name or logo text
                   Text(
-                    'XPress Fuel',
+                    'Rapid Fuel',
                     style: TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,

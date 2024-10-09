@@ -64,5 +64,5 @@ ThemeData appThemeData() {
 }
 
 // Other Constants
-const String appName = 'XPress Fuel';
+const String appName = 'Rapid Fuel';
 const Duration splashScreenDuration = Duration(seconds: 2);
